@@ -15,7 +15,7 @@ const FullFeaturedCrudGrid = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/");
+      const response = await axios.get("https://react-project-backend-tbs6.onrender.com");
       setEvents(response.data);
     } catch (error) {
       console.error("Error fetching events:", error);
@@ -60,7 +60,7 @@ const FullFeaturedCrudGrid = () => {
     try {
       if (editingEvent._id) {
         const response = await axios.put(
-          `http://localhost:3000/${editingEvent._id}`,
+          `https://react-project-backend-tbs6.onrender.com${editingEvent._id}`,
           editingEvent
         );
 
@@ -87,7 +87,7 @@ const FullFeaturedCrudGrid = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`http://localhost:3000/${_id}`);
+      await axios.delete(`https://react-project-backend-tbs6.onrender.com${_id}`);
 
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event._id !== _id)

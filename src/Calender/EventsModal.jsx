@@ -58,7 +58,7 @@ const EventsModal = () => {
     };
 
     try {
-      const response = await fetch("http://localhost:3000", {
+      const response = await fetch("https://react-project-backend-tbs6.onrender.com", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
