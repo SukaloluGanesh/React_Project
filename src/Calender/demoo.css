@@ -1,0 +1,43 @@
+.mainContent {
+  background-color: yellow;
+  overflow-y: hidden !important;
+}
+
+.css-1y8nxit-MuiDrawer-docked .MuiDrawer-paper {
+  width: 250px !important;
+}
+
+.css-w7csaj-MuiDrawer-docked .MuiDrawer-paper {
+  width: 0px !important;
+}
+.css-1y8nxit-MuiDrawer-docked {
+  width: 250px !important;
+}
+
+.css-w7csaj-MuiDrawer-docked {
+  width: 0px !important;
+}
+
+.css-1qjwql5-MuiTypography-root {
+  width: 100% !important;
+}
+
+.css-17gb34u-MuiList-root {
+  display: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.css-zd6fkg-MuiTypography-root {
+  margin: 0px !important;
+  border: none !important;
+}
+
+.css-1a2ef5c {
+  padding: 0px !important;
+}
+
+.css-f4e34s {
+  padding: 0px !important;
+}
+
