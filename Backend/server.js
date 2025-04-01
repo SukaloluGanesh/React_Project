@@ -110,7 +110,7 @@ const monogoDB_Uri = process.env.MONGO_ID;
 
 mongoose
   .connect(monogoDB_Uri)
-  .then((res) => console.log(res))
+  .then((res) => (res))
   .catch((err) => console.log(err));
 
 const userSchema = new mongoose.Schema({

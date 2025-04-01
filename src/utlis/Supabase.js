@@ -13,6 +13,7 @@ const supabaseClient = async(supabaseAccessToken) => {
       }
     }
   })
+  return supabase
 }
 
 export default supabaseClient
