@@ -1,11 +1,6 @@
 import React, { useEffect, useState } from "react";
 import landImage from "../assets/landImage.webp";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -19,6 +14,12 @@ import {
   Box,
   Avatar,
   CircularProgress,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
 import {
   CalendarToday,
@@ -31,9 +32,16 @@ import {
   LinkedIn,
   Facebook,
   Instagram,
+  
 } from "@mui/icons-material";
-
+import MenuIcon from "@mui/icons-material/Menu"
 const ScheduleMeLanding = () => {
+ 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
   return (
     <>
       <div>
@@ -63,17 +71,44 @@ const ScheduleMeLanding = () => {
                 <Button color="inherit" href="#testimonials">
                   Testimonials
                 </Button>
-                <SignedOut>
-                  <SignInButton forceRedirectUrl="/home">
                     <Button color="primary" variant="contained">
+                      <Link to="/Login">
                       Sign In
+                      </Link>
                     </Button>
-                  </SignInButton>
-                </SignedOut>
               </Box>
+              <IconButton
+              color="inherit"
+              edge="end"
+              sx={{ display: { xs: "block", md: "none" } }}
+              onClick={handleDrawerToggle}
+            >
+              <MenuIcon />
+            </IconButton>
             </Toolbar>
           </Container>
         </AppBar>
+        <Drawer
+        anchor="right"
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        sx={{ "& .MuiDrawer-paper": { width: 250 } }}
+      >
+        <List>
+          {[
+            { text: "Features", link: "#features" },
+            { text: "How It Works", link: "#how-it-works" },
+            { text: "Testimonials", link: "#testimonials" },
+            { text: "Sign In", link: "/login" },
+          ].map((item, index) => (
+            <ListItem key={index} disablePadding>
+              <ListItemButton component="a" href={item.link} onClick={handleDrawerToggle}>
+                <ListItemText primary={item.text} />
+              </ListItemButton>
+            </ListItem>
+          ))}
+        </List>
+      </Drawer>
 
         {/* Hero Section */}
         <Box sx={{ bgcolor: "#f5f5f5", py: 10 }}>
@@ -101,7 +136,10 @@ const ScheduleMeLanding = () => {
                     size="large"
                     sx={{ borderRadius: 4, textTransform: "none", px: 3 }}
                   >
+                    <Link to='/register'>
                     Sign Up
+                    </Link>
+                  
                   </Button>
                   <Button
                     variant="outlined"
@@ -415,7 +453,10 @@ const ScheduleMeLanding = () => {
                 },
               }}
             >
+              <Link to='/register' >
               Sign Up Now
+              </Link>
+             
             </Button>
           </Container>
         </Box>

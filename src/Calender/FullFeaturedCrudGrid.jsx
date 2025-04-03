@@ -3,6 +3,8 @@ import axios from "axios";
 import { Edit2, Trash2 } from "lucide-react";
 import GlobalContext from "../Context/GlobalContext";
 import "./EventGrid.css";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import eventImage from "../assets/events.jpg"
 
 const FullFeaturedCrudGrid = () => {
   const [events, setEvents] = useState([]);
@@ -12,11 +14,42 @@ const FullFeaturedCrudGrid = () => {
   const { searchedEvents, setSearchedEvents } = useContext(GlobalContext);
 
   const eventsPerPage = 6;
+  const auth = getAuth();
+  const [user, setUser] = useState(null);
 
-  const fetchEvents = async () => {
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      fetchEvents(currentUser)
+    });
+
+    return () => unsubscribe();
+  }, []);
+   
+  const fetchEvents = async (currentUser) => {
+    // try {
+    //   const response = await axios.get("https://react-project-backend-tbs6.onrender.com");
+    //   let basedData =   response.data.filter((res)=>{
+    //     return res.email == user.email
+    //   })
+
+    //     setEvents(basedData);
+
+    //   console.log(response.data)
+    //   console.log(basedData)
+    // } catch (error) {
+    //   console.error("Error fetching events:", error);
+    // }
+    if (!currentUser) return; 
+    
     try {
       const response = await axios.get("https://react-project-backend-tbs6.onrender.com");
-      setEvents(response.data);
+      let filteredData = response.data.filter((res) => {
+        return res.email == currentUser.email;
+      });
+
+      setEvents(filteredData);
+  
     } catch (error) {
       console.error("Error fetching events:", error);
     }
@@ -27,12 +60,18 @@ const FullFeaturedCrudGrid = () => {
   }, []);
 
   useEffect(() => {
-    if (searchedEvents && searchedEvents.length > 0) {
-      setEvents(searchedEvents);
-    } else {
-      fetchEvents();
+    if (user && searchedEvents && searchedEvents.length > 0) {
+     
+      const filteredSearchResults = searchedEvents.filter(
+        (event) => event.email === user.email
+      );
+      setEvents(filteredSearchResults);
+    } else if (user) {
+      fetchEvents(user);
     }
-  }, [searchedEvents]);
+  }, [searchedEvents, user]);
+ 
+  
 
   const indexOfLastEvent = currentPage * eventsPerPage;
   const indexOfFirstEvent = indexOfLastEvent - eventsPerPage;
@@ -60,7 +99,7 @@ const FullFeaturedCrudGrid = () => {
     try {
       if (editingEvent._id) {
         const response = await axios.put(
-          `https://react-project-backend-tbs6.onrender.com${editingEvent._id}`,
+          `https://react-project-backend-tbs6.onrender.com/${editingEvent._id}`,
           editingEvent
         );
 
@@ -71,7 +110,7 @@ const FullFeaturedCrudGrid = () => {
         );
       } else {
         const response = await axios.post(
-          "http://localhost:3000/",
+          "https://react-project-backend-tbs6.onrender.com",
           editingEvent
         );
 
@@ -87,7 +126,7 @@ const FullFeaturedCrudGrid = () => {
 
   const handleDelete = async (_id) => {
     try {
-      await axios.delete(`https://react-project-backend-tbs6.onrender.com${_id}`);
+      await axios.delete(`https://react-project-backend-tbs6.onrender.com/${_id}`);
 
       setEvents((prevEvents) =>
         prevEvents.filter((event) => event._id !== _id)
@@ -109,45 +148,57 @@ const FullFeaturedCrudGrid = () => {
   return (
     <div className="event-grid-container container p-6  h-90vh w-100%">
       <div className="event-grid grid grid-cols-3 grid-rows-2 gap-6 h-70vh">
-        {currentEvents.map((event) => (
-          <div
-            key={event.id}
-            className="cards    bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl p-5 relative overflow-hidden"
-          >
-            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
-            <h3 className="text-2xl font-bold text-gray-800 mb-3 truncate">
-              {event.title}
-            </h3>
-            <div className="space-y-2 text-gray-600">
-              <p>
-                <span className="font-semibold">Date:</span> {event.date}
-              </p>
-              <p>
-                <span className="font-semibold">Time:</span> {event.time}
-              </p>
-              <p>
-                <span className="font-semibold">Location:</span>{" "}
-                {event.location}
-              </p>
-            </div>
+      {currentEvents.length > 0 ? (
+          currentEvents.map((event) => (
+            <div
+              key={event._id}
+              className="cards bg-white rounded-xl shadow-lg transform transition-all duration-300 hover:scale-105 hover:shadow-2xl p-5 relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+              <h3 className="text-2xl font-bold text-gray-800 mb-3 truncate">
+                {event.title}
+              </h3>
+              <div className="space-y-2 text-gray-600">
+                <p>
+                  <span className="font-semibold">Date:</span> {event.date}
+                </p>
+                <p>
+                  <span className="font-semibold">Time:</span> {event.time}
+                </p>
+                <p>
+                  <span className="font-semibold">Location:</span>{" "}
+                  {event.location}
+                </p>
+              </div>
 
-            <div className="absolute bottom-4 right-4 flex space-x-2">
-              <button
-                onClick={() => handleEdit(event)}
-                className="text-blue-500 hover:text-blue-700 bg-blue-100 p-2 rounded-full transition-all duration-300 hover:bg-blue-200"
-              >
-                <Edit2 size={20} />
-              </button>
-              <button
-                onClick={() => handleDelete(event._id)}
-                className="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded-full transition-all duration-300 hover:bg-red-200"
-              >
-                <Trash2 size={20} />
-              </button>
+              <div className="absolute bottom-4 right-4 flex space-x-2">
+                <button
+                  onClick={() => handleEdit(event)}
+                  className="text-blue-500 hover:text-blue-700 bg-blue-100 p-2 rounded-full transition-all duration-300 hover:bg-blue-200"
+                >
+                  <Edit2 size={20} />
+                </button>
+                <button
+                  onClick={() => handleDelete(event._id)}
+                  className="text-red-500 hover:text-red-700 bg-red-100 p-2 rounded-full transition-all duration-300 hover:bg-red-200"
+                >
+                  <Trash2 size={20} />
+                </button>
+              </div>
             </div>
+          ))
+        ) : (
+          <div className="col-span-full flex flex-col items-center justify-center p-8 text-center">
+            <img 
+              src={eventImage} 
+              alt="No events" 
+              className="mb-6 rounded-lg shadow-md max-w-md w-full" 
+            />
+            <p className="text-gray-500 text-lg mt-4">No events found. Create your first event!</p>
           </div>
-        ))}
+        )}
       </div>
+
 
       <div className="flex justify-center items-center space-x-4 mt-6">
         <button
@@ -170,7 +221,7 @@ const FullFeaturedCrudGrid = () => {
       </div>
 
       {isModalOpen && (
-        <div className="fixed inset-0 bg-opacity-30 flex justify-center items-center z-50">
+        <div className="fixed inset-0 bg-opacity-30 flex justify-center items-center z-50 text-black">
           <div className="bg-white rounded-xl shadow-2xl w-96 p-6 relative">
             <h2 className="text-2xl font-bold mb-4 text-gray-800">
               {editingEvent.id ? "Edit Event" : "Create Event"}

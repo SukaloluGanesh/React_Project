@@ -16,21 +16,15 @@ import SearchIcon from "@mui/icons-material/Search";
 import { AppProvider } from "@toolpad/core/AppProvider";
 import { DashboardLayout, ThemeSwitcher } from "@toolpad/core/DashboardLayout";
 import { useDemoRouter } from "@toolpad/core/internal";
-// import App from './Calender';
-import { useUser } from "@clerk/clerk-react";
+
 
 import { DateCalendar } from "@mui/x-date-pickers";
 import "./home.css";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
+
 
 import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "@clerk/clerk-react";
+
 import { getMonth } from "../Calender/Utlis";
 import Month from "../Calender/Month";
 import Sidebar from "../Calender/Sidebar";
@@ -40,7 +34,10 @@ import GlobalContext from "../Context/GlobalContext";
 import Event from "../Calender/Event";
 import EventSideBar from "../Calender/EventSideBar";
 import ColorToggleButton from "../Calender/ToggleButton";
-
+import { signOut } from 'firebase/auth';
+import { Button } from "@mui/material";
+import { auth, provider } from '../firebase/Firebase';
+import AccountDemoSignedIn from "../firebase/Account";
 console.table(getMonth(5));
 const demoTheme = createTheme({
   cssVariables: {
@@ -65,21 +62,6 @@ function SidebarHeader() {
   );
 }
 
-const UserProfile = () => {
-  const { isSignedIn, user } = useUser();
-
-  if (!isSignedIn) {
-    return <p>Please sign in</p>;
-  }
-
-  return (
-    <div>
-      <h2>Welcome, {user.fullName}</h2>
-      <p>Email: {user.primaryEmailAddress?.emailAddress}</p>
-      <img src={user.imageUrl} alt="User Profile" width={50} />
-    </div>
-  );
-};
 
 function DemoPageContent({ pathname }) {
   const { monthIndex, showEventModal, change } = useContext(GlobalContext);
@@ -121,15 +103,19 @@ DemoPageContent.propTypes = {
 };
 
 function ToolbarActionsSearch() {
-  const { isSignedIn } = useAuth();
+ 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isSignedIn) {
-      navigate("/");
-    }
-  }, [isSignedIn, navigate]);
-
+ 
+const handleLogout = async () => {
+  try {
+    await signOut(auth);
+    localStorage.clear();
+    navigate("/");
+  } catch (error) {
+    console.error("Error signing out:", error);
+  }
+};
   return (
     <Stack direction="row">
       <Tooltip title="Search" enterDelay={1000}>
@@ -147,9 +133,11 @@ function ToolbarActionsSearch() {
       </Tooltip>
 
       <ThemeSwitcher />
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+   
+
+
+<AccountDemoSignedIn/>
+
     </Stack>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -15,9 +15,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import dayjs from "dayjs";
 import GlobalContext from "../Context/GlobalContext";
-import { useUser } from "@clerk/clerk-react";
-import axios from "axios";
 
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 const EventsModal = () => {
   const { modalForEvents, setModalForEvents, setChange } =
     useContext(GlobalContext);
@@ -29,7 +28,21 @@ const EventsModal = () => {
     notifyBefore: "30",
     description: "",
   });
-  const { isSignedIn, user } = useUser();
+ 
+  const auth = getAuth();
+  const useAuthUser = () => {
+    const [user, setUser] = useState(null);
+  
+    useEffect(() => {
+      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+      });
+  
+      return () => unsubscribe();
+    }, []);
+  
+    return user;
+  };
 
   const handleInputChange = (name) => (value) => {
     setEventDetails((prev) => ({
@@ -38,9 +51,11 @@ const EventsModal = () => {
     }));
   };
 
+  const user = useAuthUser()
  
 
   const handleSubmit = async (e) => {
+    e.preventDefault()
     const formattedDate = eventDetails.date
       ? dayjs(eventDetails.date).format("YYYY-MM-DD")
       : null;
@@ -53,8 +68,8 @@ const EventsModal = () => {
       ...eventDetails,
       date: formattedDate,
       time: formattedTime,
-      email: user.primaryEmailAddress.emailAddress,
-      username: user.username,
+      email: user.email,
+      username: user.displayName || "User",
     };
 
     try {
@@ -72,7 +87,7 @@ const EventsModal = () => {
       }
 
       const responseData = await response.json();
-
+      console.log(responseData)
       setEventDetails({
         title: "",
         date: null,
@@ -81,6 +96,8 @@ const EventsModal = () => {
         notifyBefore: "30",
         description: "",
       });
+      setModalForEvents(false);
+      window.location.reload()
     } catch (error) {
       console.error("Error submitting event:", error);
     }

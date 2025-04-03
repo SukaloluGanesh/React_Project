@@ -23,18 +23,16 @@ import GlobalContext from "../Context/GlobalContext";
 import EventSideBar from "./EventSideBar";
 import Event from "./Event";
 import "./demoo.css";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { useAuth } from "@clerk/clerk-react";
+
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
 import CalenderHeader from "./CalenderHeader";
 import axios from "axios";
 import ColorToggleButton from "./ToggleButton";
+import { signOut } from 'firebase/auth';
+import { Button } from "@mui/material";
+import { auth, provider } from '../firebase/Firebase';
+import AccountDemoSignedIn from "../firebase/Account";
 
 const demoTheme = createTheme({
   cssVariables: {
@@ -78,14 +76,18 @@ function ToolbarActionsSearch() {
   const [searchData, setSearchData] = useState("");
   const { setSearchedEvents } = useContext(GlobalContext);
 
-  const { isSignedIn } = useAuth();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isSignedIn) {
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      localStorage.clear();
       navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
     }
-  }, [isSignedIn, navigate]);
+  };
 
   const fetchEvents = async () => {
     try {
@@ -152,9 +154,8 @@ function ToolbarActionsSearch() {
       />
 
       <ThemeSwitcher />
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
+         <AccountDemoSignedIn/>
+    
     </Stack>
   );
 }

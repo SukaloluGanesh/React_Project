@@ -67,7 +67,10 @@ export default function ColorToggleButton({ isDarkMode = false }) {
         <CalendarMonthIcon />
       </ToggleButton>
       <ToggleButton value="android" sx={buttonStyles} aria-label="Add Task">
+        <Link to="/events">
         <AddTaskIcon />
+        </Link>
+        
       </ToggleButton>
     </ToggleButtonGroup>
   );

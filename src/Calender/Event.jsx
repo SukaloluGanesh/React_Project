@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import GlobalContext from "../Context/GlobalContext";
 import BasicModalDialog from "./EventsModal";
 import FullFeaturedCrudGrid from "./FullFeaturedCrudGrid";
-
+import './EventGrid.css'
 const Event = () => {
   const { modalForEvents, setModalForEvents } = useContext(GlobalContext);
 
