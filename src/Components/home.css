@@ -1,4 +1,4 @@
-.mainContent {
+/* .mainContent {
   background-color: yellow;
   overflow-y: hidden !important;
 }
@@ -40,4 +40,200 @@
 .css-m69qwo-MuiStack-root {
   justify-content: center !important;
   align-items: center !important;
+} */
+
+/* 
+.dashboard-container .mainContent {
+  background-color: yellow;
+  overflow-y: hidden !important;
+}
+
+
+.dashboard-container .MuiDrawer-root {
+  width: 250px !important;
+}
+
+.dashboard-container .MuiDrawer-paper {
+  width: 250px !important;
+}
+
+
+.dashboard-container .MuiDrawer-root.closed {
+  width: 0px !important;
+}
+
+.dashboard-container.MuiDrawer-paper.closed {
+  width: 0px !important;
+}
+
+
+.dashboard-container .MuiTypography-root {
+  width: 100% !important;
+  margin: 0px !important;
+  border: none !important;
+}
+
+
+.dashboard-container .MuiList-root {
+  display: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+.dashboard-container .MuiBox-root,
+.dashboard-container .MuiContainer-root {
+  padding: 0px !important;
+} */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* 
+
+.dashboard-container .mainContent {
+  background-color: yellow;
+  overflow-y: hidden !important;
+}
+
+
+  .dashboard-container .MuiDrawer-root {
+  width: 250px !important;
+} 
+
+ .dashboard-container .MuiDrawer-paper {
+  width: 250px !important;
+} 
+
+
+.dashboard-container .MuiDrawer-root.closed{
+  width: 0px !important;
+
+}
+.dashboard-container .MuiDrawer-paper.closed {
+  width: 0px !important;
+}
+
+.dashboard-container .MuiTypography-root {
+  width: 100% !important;
+  margin: 0px !important;
+  border: none !important;
+}
+
+
+.dashboard-container .MuiList-root {
+  display: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+
+.dashboard-container .MuiBox-root,
+.dashboard-container .MuiContainer-root {
+  padding: 0px !important;
+}
+
+
+.dashboard-container .MuiStack-root {
+  justify-content: center !important;
+  align-items: center !important;
+}  */
+
+
+
+
+
+
+
+
+
+
+
+
+/* Base styles for main content */
+.mainContent {
+  background-color: yellow;
+  overflow-y: hidden !important;
+}
+
+/* Drawer styles - open state */
+.dashboard-container .MuiDrawer-root {
+  width: 250px !important;
+  transition: width 0.3s ease-out !important;
+}
+
+.dashboard-container .MuiDrawer-paper {
+  width: 250px !important;
+  transition: width 0.3s ease-out !important;
+}
+
+/* Drawer styles - closed state */
+.dashboard-container .MuiDrawer-root.closed {
+  width: 0px !important;
+}
+
+.dashboard-container .MuiDrawer-paper.closed {
+  width: 0px !important;
+  transform: translateX(-100%) !important;
+}
+
+/* Typography styles */
+.dashboard-container .MuiTypography-root {
+  width: 100% !important;
+  margin: 0px !important;
+  border: none !important;
+}
+
+/* Hide list items */
+.dashboard-container .MuiList-root {
+  display: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+/* Box and container padding */
+.dashboard-container .MuiBox-root,
+.dashboard-container .MuiContainer-root {
+  padding: 0px !important;
+}
+
+/* Stack positioning */
+.dashboard-container .MuiStack-root {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Override any conflicting styles with higher specificity */
+body .dashboard-container .MuiDrawer-root.closed,
+body .dashboard-container .MuiDrawer-paper.closed {
+  width: 0px !important;
+  min-width: 0px !important;
+  max-width: 0px !important;
+  overflow: hidden !important;
+}
+
+body .dashboard-container .MuiDrawer-root:not(.closed),
+body .dashboard-container .MuiDrawer-paper:not(.closed) {
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: 250px !important;
+}
+
+.MuiBox-root.css-1dxxui button {
+  display: none !important;
 }

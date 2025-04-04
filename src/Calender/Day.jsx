@@ -57,7 +57,7 @@ const Day = ({ day, rowIdx }) => {
             {day && day.format ? day.format("ddd").toUpperCase() : "N/A"}
           </p>
         )}
-        <p className={`text-sm p-1 my-1 text-center ${getCurrentDayClass()}`}>
+        <p className={`text-sm mt-0.7 text-center ${getCurrentDayClass()}`}>
           {day && day.format ? day.format("D") : ""}
         </p>
       </header>
@@ -66,7 +66,7 @@ const Day = ({ day, rowIdx }) => {
           <div
             key={idx}
             onClick={() => setSelectedEvent(evt)}
-            className={`${getLabelBgClass(evt.label)} p-1 mr-3 text-gray-600 text-sm rounded mb-1 truncate`}
+            className={`${getLabelBgClass(evt.label)} p-1 m-1 text-gray-600 text-sm rounded truncate`}
           >
             {evt.title}
           </div>

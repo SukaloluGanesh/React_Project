@@ -44,7 +44,7 @@ const CalenderHeader = () => {
         </span>
       </button>
 
-      <h3 className="ml-4 text-xl text-gray-5 font-bold">
+      <h3 className="ml-4 text-xl  font-bold whitespace-nowrap">
         {dayjs(new Date(dayjs().year(), monthIndex)).format("MMMM YYYY")}
       </h3>
     

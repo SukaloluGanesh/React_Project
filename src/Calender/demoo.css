@@ -1,4 +1,4 @@
-.mainContent {
+/* .mainContent {
   background-color: yellow;
   overflow-y: hidden !important;
 }
@@ -40,4 +40,97 @@
 .css-f4e34s {
   padding: 0px !important;
 }
+ */
 
+ /* Base styles for main content */
+.mainContent {
+  background-color: yellow;
+  overflow-y: hidden !important;
+}
+
+/* Drawer styles - open state */
+.MuiDrawer-root {
+  width: 250px !important;
+  transition: width 0.3s ease-in-out !important;
+}
+
+.MuiDrawer-paper {
+  width: 250px !important;
+  transition: width 0.3s ease-in-out !important;
+}
+
+/* Drawer styles - closed state */
+.MuiDrawer-root.closed {
+  width: 0px !important;
+}
+
+.MuiDrawer-paper.closed {
+  width: 0px !important;
+}
+
+/* Specific class targeting based on your existing CSS */
+.css-1y8nxit-MuiDrawer-docked {
+  width: 250px !important;
+}
+
+.css-1y8nxit-MuiDrawer-docked .MuiDrawer-paper {
+  width: 250px !important;
+}
+
+.css-w7csaj-MuiDrawer-docked {
+  width: 0px !important;
+}
+
+.css-w7csaj-MuiDrawer-docked .MuiDrawer-paper {
+  width: 0px !important;
+}
+
+/* Typography styles */
+.css-1qjwql5-MuiTypography-root {
+  width: 100% !important;
+}
+
+/* Hide list items */
+.css-17gb34u-MuiList-root {
+  display: none;
+  margin: 0px;
+  padding: 0px;
+}
+
+.css-zd6fkg-MuiTypography-root {
+  margin: 0px !important;
+  border: none !important;
+}
+
+.css-1a2ef5c {
+  padding: 0px !important;
+}
+
+.css-f4e34s {
+  padding: 0px !important;
+}
+
+/* Override any conflicting styles with higher specificity */
+body .dashboard-container .MuiDrawer-root.closed,
+body .dashboard-container .MuiDrawer-paper.closed {
+  width: 0px !important;
+  min-width: 0px !important;
+  max-width: 0px !important;
+  overflow: hidden !important;
+}
+
+body .dashboard-container .MuiDrawer-root:not(.closed),
+body .dashboard-container .MuiDrawer-paper:not(.closed) {
+  width: 250px !important;
+  min-width: 250px !important;
+  max-width: 250px !important;
+}
+
+/* Animation for smooth transitions */
+.MuiDrawer-root, .MuiDrawer-paper {
+  transition: width 0.3s ease-in-out !important;
+}
+
+.MuiBox-root.css-1dxxui button {
+  display: none !important;
+}
